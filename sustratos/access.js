@@ -1,0 +1,4 @@
+const gateForm=document.querySelector('#accessForm');
+const gatePin=document.querySelector('#accessPin');
+const accessDigest='822a8e0aad6a68a99ee9db27651f1f6115414b7a772984b3f6609246ffbe3ef5';
+gateForm.addEventListener('submit',async event=>{event.preventDefault();try{const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(gatePin.value));const digest=Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('');if(digest===accessDigest){document.querySelector('#accessGate').hidden=true;document.body.classList.remove('accesslocked');gatePin.value='';document.querySelector('.brand').focus();}else{document.querySelector('#accessError').textContent='La clave no es correcta. Intentá de nuevo.';gatePin.select();}}catch{document.querySelector('#accessError').textContent='Abrí la guía desde su enlace web para ingresar.';}});
